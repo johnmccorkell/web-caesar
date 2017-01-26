@@ -16,9 +16,10 @@
 #
 import webapp2
 import caesar
+import cgi
 
 def build_page(textarea_content):
-    
+
     rotation_label="<label>Rotate by:</label>"
     rotation_input= "<input type='number' name='rotation'/>"
 
@@ -41,7 +42,8 @@ class MainHandler(webapp2.RequestHandler):
         message=self.request.get("message")
         rotation=self.request.get("rotation")
         encrypted_message=caesar.encrypt(message,rotation)
-        content=build_page(encrypted_message)
+        escaped_message=cgi.escape(encrypted_message)
+        content=build_page(escaped_message)
 
         self.response.write(content)
 
